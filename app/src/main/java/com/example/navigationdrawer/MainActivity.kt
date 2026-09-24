@@ -2,6 +2,7 @@ package com.example.navigationdrawer
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.navigationdrawer.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import androidx.activity.OnBackPressedCallback
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +38,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         binding.navigationDrawer.setNavigationItemSelectedListener(this)
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when(item.itemId){
+                R.id.bottom_home -> openFragment(HomeFragment())
+                R.id.bottom_cart -> openFragment(CartFragment())
+                R.id.bottom_profile -> openFragment(ProfileFragment())
+                R.id.bottom_menu -> openFragment(MenuFragment())
+            }
+            true
+        }
+
+        fragmentManager = supportFragmentManager
+        openFragment(HomeFragment())
+
+        binding.fab.setOnClickListener {
+            Toast.makeText(this,"Categorias", Toast.LENGTH_SHORT).show()
+        }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    finish()
+                }
+            }
+        })
+
 
     }
 

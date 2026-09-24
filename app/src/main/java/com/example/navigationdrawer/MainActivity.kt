@@ -5,10 +5,12 @@ import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.navigationdrawer.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -36,7 +38,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        TODO("Not yet implemented")
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.nav_jogos -> openFragment(JogosFragment())
+            R.id.nav_hardware -> openFragment(HardwareFragment())
+            R.id.nav_monitores -> openFragment(MonitoresFragment())
+            R.id.nav_perifericos -> openFragment(PerifericosFragment())
+            R.id.nav_computadores -> openFragment(ComputadoresFragment())
+            R.id.nav_maisvendidos -> openFragment(MaisVendidosFragment())
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    private fun openFragment(fragment: Fragment){
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container,fragment)
+        fragmentTransaction.commit()
     }
 }
